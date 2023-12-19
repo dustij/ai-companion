@@ -8,6 +8,7 @@ import type { FC } from "react"
 import { cn } from "~/lib/utils"
 import { Button } from "./ui/button"
 import { ModeToggle } from "./mode-toggle"
+import MobileSidebar from "./mobile-sidebar"
 
 const font = Poppins({
   weight: "600",
@@ -18,14 +19,14 @@ interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = () => {
   return (
-    <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 border-b border-primary/10 bg-secondary">
+    <div className="fixed z-50 flex h-16 w-full items-center justify-between border-b border-primary/10 bg-secondary px-4 py-2">
       <div className="flex items-center">
-        <Menu className="block md:hidden" />
+        <MobileSidebar />
         <Link href="/">
           <h1
             className={cn(
-              "hidden md:block text-xl md:text-3xl font-bold text-primary",
-              font.className
+              "hidden text-xl font-bold text-primary md:block md:text-3xl",
+              font.className,
             )}
           >
             companion.ai
@@ -35,7 +36,7 @@ const Navbar: FC<NavbarProps> = () => {
       <div className="flex items-center gap-x-3">
         <Button size="sm" variant="premium">
           Upgrade
-          <Sparkles className="h-4 w-4 fill-white ml-2 text-white" />
+          <Sparkles className="ml-2 h-4 w-4 fill-white text-white" />
         </Button>
         <ModeToggle />
         <UserButton />
