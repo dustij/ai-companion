@@ -1,12 +1,12 @@
-import { UserButton } from "@clerk/nextjs"
 import { NextPage } from "next"
+import SearchInput from "~/components/search-input"
 
 interface Props {}
 
 const RootPage: NextPage<Props> = ({}) => {
   return (
-    <div>
-      <UserButton afterSignOutUrl="/" />
+    <div className="h-full space-y-2 p-4">
+      <SearchInput />
     </div>
   )
 }
