@@ -5,8 +5,9 @@ import type { FC } from "react"
 import { Poppins } from "next/font/google"
 import Link from "next/link"
 
-import { UserButton } from "@clerk/nextjs"
 import { Menu, Sparkles } from "lucide-react"
+
+import { UserButton } from "@clerk/nextjs"
 
 import { cn } from "~/lib/utils"
 

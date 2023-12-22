@@ -1,6 +1,6 @@
 "use client"
 
-import { type FC, useState, useEffect } from "react"
+import { type FC, useEffect, useState } from "react"
 
 import { useRouter, useSearchParams } from "next/navigation"
 

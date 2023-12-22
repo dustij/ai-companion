@@ -1,8 +1,11 @@
 "use client"
 
-import { Home, Plus, Settings } from "lucide-react"
-import { usePathname, useRouter } from "next/navigation"
 import type { FC } from "react"
+
+import { usePathname, useRouter } from "next/navigation"
+
+import { Home, Plus, Settings } from "lucide-react"
+
 import { cn } from "~/lib/utils"
 
 interface SidebarProps {}
