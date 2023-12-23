@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm"
 import {
   char,
+  mysqlEnum,
   mysqlTableCreator,
   text,
   timestamp,
@@ -18,7 +19,6 @@ function generateNanoId() {
   return nanoid()
 }
 
-// https://orm.drizzle.team/docs/goodies#multi-project-schema
 export const mysqlTable = mysqlTableCreator((name) => `ai-companion_${name}`)
 
 export const category = mysqlTable("category", {
@@ -53,9 +53,34 @@ export const companion = mysqlTable("companion", {
   categoryId: char("category_id", { length: NANO_ID_LENGTH }).notNull(),
 })
 
-export const companionRelations = relations(companion, ({ one }) => ({
+export const companionRelations = relations(companion, ({ one, many }) => ({
   category: one(category, {
     fields: [companion.categoryId],
     references: [category.id],
+  }),
+  messages: many(message),
+}))
+
+export const message = mysqlTable("message", {
+  id: char("id", { length: NANO_ID_LENGTH })
+    .$defaultFn(generateNanoId)
+    .primaryKey(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  role: mysqlEnum("role", ["user", "system"]).notNull(),
+  content: text("content"),
+
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .defaultNow()
+    .onUpdateNow()
+    .notNull(),
+
+  companionId: char("companion_id", { length: NANO_ID_LENGTH }).notNull(),
+})
+
+export const messageRelations = relations(message, ({ one }) => ({
+  companion: one(companion, {
+    fields: [message.companionId],
+    references: [companion.id],
   }),
 }))
