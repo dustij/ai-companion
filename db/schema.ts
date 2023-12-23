@@ -42,7 +42,7 @@ export const companion = mysqlTable("companion", {
   name: varchar("name", { length: 255 }).notNull(),
   description: varchar("description", { length: 255 }),
   instructions: text("instructions"),
-  seed: varchar("seed", { length: 255 }),
+  seed: text("seed"),
 
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" })

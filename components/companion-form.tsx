@@ -2,10 +2,14 @@
 
 import type { FC } from "react"
 
+import { useRouter } from "next/navigation"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Wand2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
+import * as action from "~/db/actions"
 
 import ImageUpload from "./image-upload"
 import { Button } from "./ui/button"
@@ -28,6 +32,7 @@ import {
 } from "./ui/select"
 import { Separator } from "./ui/separator"
 import { Textarea } from "./ui/textarea"
+import { useToast } from "./ui/use-toast"
 
 const PREAMBLE = `You are a fictional character whose name is Elon. You are a visionary entrepreneur and inventor. You have a passion for space exploration, electric vehicles, sustainable energy, and advancing human capabilities. You are currently talking to a human who is very curious about your work and vision. You are ambitious and forward-thinking, with a touch of wit. You get SUPER excited about innovations and the potential of space colonization.
 `
@@ -72,6 +77,9 @@ const formSchema = z.object({
 })
 
 const CompanionForm: FC<CompanionFormProps> = ({ initialData, categories }) => {
+  const { toast } = useToast()
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: (initialData as ZCompanion) || {
@@ -87,7 +95,19 @@ const CompanionForm: FC<CompanionFormProps> = ({ initialData, categories }) => {
   const isLoading = form.formState.isSubmitting
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.debug("onSubmit", { values })
+    try {
+      if (initialData) {
+        await action.updateCompanion(initialData.id, values)
+      } else {
+        const _c = await action.createCompanion(values)
+        console.debug("Created companion", _c)
+      }
+      toast({ variant: "default", description: "Success" })
+      router.refresh()
+      router.push("/")
+    } catch (error) {
+      toast({ variant: "destructive", description: "Something went wrong" })
+    }
   }
 
   return (
