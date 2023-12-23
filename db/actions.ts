@@ -43,6 +43,7 @@ export async function createCompanion(values: {
           eq(companion.categoryId, values.categoryId),
         ),
       )
+
     return companions[0]
   } catch (e) {
     console.error(e, "error creating companion")
@@ -67,6 +68,25 @@ export async function updateCompanion(
     if (!user || !user.id || !user.firstName) {
       throw new Error("no user found")
     }
+
+    // TODO: Check for subscription
+
+    await db
+      .insert(companion)
+      .values({
+        ...values,
+        userId: user.id,
+        userName: user.firstName,
+        id: id,
+      })
+      .onDuplicateKeyUpdate({ set: values })
+
+    const companions = await db
+      .select()
+      .from(companion)
+      .where(eq(companion.id, id))
+
+    return companions[0]
   } catch (e) {
     console.error(e, "error updating companion")
     throw e
