@@ -21,6 +21,7 @@ const RootPage: NextPage<Props> = async ({ searchParams }) => {
       .select()
       .from(companion)
       .where(eq(companion.categoryId, searchParams.categoryId))
+      .orderBy(companion.createdAt)
   } else if (searchParams && searchParams.name && !searchParams.categoryId) {
     data = await db
       .select()
@@ -28,6 +29,7 @@ const RootPage: NextPage<Props> = async ({ searchParams }) => {
       .where(
         sql`MATCH (name) AGAINST (${searchParams.name} IN NATURAL LANGUAGE MODE)`,
       )
+      .orderBy(companion.createdAt)
   } else if (searchParams && searchParams.name && searchParams.categoryId) {
     data = await db
       .select()
@@ -38,8 +40,9 @@ const RootPage: NextPage<Props> = async ({ searchParams }) => {
           eq(companion.categoryId, searchParams.categoryId),
         ),
       )
+      .orderBy(companion.createdAt)
   } else {
-    data = await db.select().from(companion)
+    data = await db.select().from(companion).orderBy(companion.createdAt)
   }
 
   const categories = await db.select().from(category)
