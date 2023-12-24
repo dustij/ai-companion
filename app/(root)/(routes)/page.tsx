@@ -3,6 +3,7 @@ import { NextPage } from "next"
 import { and, count, eq, sql } from "drizzle-orm"
 
 import Categories from "~/components/categories"
+import Companions from "~/components/companions"
 import SearchInput from "~/components/search-input"
 import { db } from "~/db"
 import { category, companion, message } from "~/db/schema"
@@ -108,14 +109,13 @@ const RootPage: NextPage<Props> = async ({ searchParams }) => {
       .orderBy(companion.createdAt)
   }
 
-  console.log(data)
-
   const categories = await db.select().from(category)
 
   return (
     <div className="h-full space-y-2 p-4">
       <SearchInput />
       <Categories data={categories} />
+      <Companions data={data} />
     </div>
   )
 }
