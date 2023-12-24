@@ -1,6 +1,8 @@
+import { table } from "console"
 import { relations } from "drizzle-orm"
 import {
   char,
+  index,
   mysqlEnum,
   mysqlTableCreator,
   text,
@@ -32,26 +34,34 @@ export const categoryRelations = relations(category, ({ many }) => ({
   companions: many(companion),
 }))
 
-export const companion = mysqlTable("companion", {
-  id: char("id", { length: NANO_ID_LENGTH })
-    .$defaultFn(generateNanoId)
-    .primaryKey(),
-  userId: varchar("user_id", { length: 255 }).notNull(),
-  userName: varchar("user_name", { length: 255 }).notNull(),
-  src: varchar("src", { length: 255 }),
-  name: varchar("name", { length: 255 }).notNull(),
-  description: varchar("description", { length: 255 }),
-  instructions: text("instructions"),
-  seed: text("seed"),
+export const companion = mysqlTable(
+  "companion",
+  {
+    id: char("id", { length: NANO_ID_LENGTH })
+      .$defaultFn(generateNanoId)
+      .primaryKey(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
+    userName: varchar("user_name", { length: 255 }).notNull(),
+    src: varchar("src", { length: 255 }),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: varchar("description", { length: 255 }),
+    instructions: text("instructions"),
+    seed: text("seed"),
 
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date" })
-    .defaultNow()
-    .onUpdateNow()
-    .notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .onUpdateNow()
+      .notNull(),
 
-  categoryId: char("category_id", { length: NANO_ID_LENGTH }).notNull(),
-})
+    categoryId: char("category_id", { length: NANO_ID_LENGTH }).notNull(),
+  },
+  (table) => {
+    return {
+      nameIdx: index("FULLTEXT").on(table.name),
+    }
+  },
+)
 
 export const companionRelations = relations(companion, ({ one, many }) => ({
   category: one(category, {
