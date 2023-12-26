@@ -25,3 +25,13 @@ interface ZCompanion {
   src?: string | undefined
   categoryId?: string | undefined
 }
+
+interface IMessage {
+  id: string
+  userId: string
+  role: "user" | "system"
+  content: string | null
+  companionId: string
+  createdAt: Date
+  updatedAt: Date
+}

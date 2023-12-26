@@ -2,9 +2,10 @@ import { NextPage } from "next"
 
 import { eq } from "drizzle-orm"
 
-import CompanionForm from "~/components/companion-form"
 import { db } from "~/db"
 import { category, companion } from "~/db/schema"
+
+import CompanionForm from "./components/companion-form"
 
 interface Props {
   params: { companionId: string }
