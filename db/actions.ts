@@ -92,3 +92,18 @@ export async function updateCompanion(
     throw e
   }
 }
+
+export async function deleteCompanion(id: string) {
+  try {
+    const user = await currentUser()
+
+    if (!user || !user.id || !user.firstName) {
+      throw new Error("no user found")
+    }
+
+    await db.delete(companion).where(eq(companion.id, id))
+  } catch (e) {
+    console.error(e, "error deleting companion")
+    throw e
+  }
+}

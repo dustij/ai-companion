@@ -62,7 +62,7 @@ const ChatIdPage: NextPage<Props> = async ({ params }) => {
     return redirect("/")
   }
 
-  console.log("\nstart\n", companions[0], "\nend\n")
+  // console.log("\nstart\n", companions[0], "\nend\n")
 
   return <ChatClient companion={companions[0]} />
 }
