@@ -101,7 +101,9 @@ export async function deleteCompanion(id: string) {
       throw new Error("no user found")
     }
 
-    await db.delete(companion).where(eq(companion.id, id))
+    await db
+      .delete(companion)
+      .where(and(eq(companion.id, id), eq(companion.userId, user.id)))
   } catch (e) {
     console.error(e, "error deleting companion")
     throw e

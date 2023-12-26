@@ -102,8 +102,8 @@ const CompanionForm: FC<CompanionFormProps> = ({ initialData, categories }) => {
         console.debug("Created companion", _c)
       }
       toast({ variant: "default", description: "Success" })
-      router.refresh()
       router.push("/")
+      router.refresh()
     } catch (error) {
       toast({ variant: "destructive", description: "Something went wrong" })
     }

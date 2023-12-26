@@ -39,6 +39,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ companion }) => {
       await action.deleteCompanion(companion.id)
       toast({ description: "Success", variant: "default" })
       router.push("/")
+      router.refresh()
     } catch (error) {
       toast({
         description: "Something went wrong",
