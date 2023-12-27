@@ -27,11 +27,11 @@ interface ZCompanion {
 }
 
 interface IMessage {
-  id: string
-  userId: string
+  id?: string
+  userId?: string
   role: "user" | "system"
   content: string | null
-  companionId: string
-  createdAt: Date
-  updatedAt: Date
+  companionId?: string
+  createdAt?: Date
+  updatedAt?: Date
 }

@@ -38,13 +38,8 @@ const ChatIdPage: NextPage<Props> = async ({ params }) => {
       messageCount: count(message.id),
       messages: sql`JSON_ARRAYAGG(
         JSON_OBJECT(
-          'id', ${message.id},
-          'userId', ${message.userId}, 
           'role', ${message.role}, 
-          'content', ${message.content},
-          'companionId', ${message.companionId},
-          'createdAt', ${message.createdAt},
-          'updatedAt', ${message.updatedAt}
+          'content', ${message.content}
         ))`,
     })
     .from(companion)
